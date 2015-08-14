@@ -60,15 +60,17 @@ module.exports = function(callback) {
   }
 
   // check for right-to-left (RTL) language
-  if(config.rtl == 'both') {
-    gulp.start('watch-rtl');
-  }
-  if(config.rtl === true || config.rtl === 'Yes') {
-    gulp.start('watch-rtl');
-    return;
+  if(config.rtl) {
+    if( config.rtl.toString().toLowerCase() === 'both') {
+      gulp.start('watch-rtl');
+    }
+
+    if(config.rtl === true || config.rtl.toString().toLowerCase() === 'yes') {
+      gulp.start('watch-rtl');
+      return;
+    }
   }
 
-  //console.clear();
   console.log('Watching source files for changes');
 
   /*--------------

@@ -18,7 +18,9 @@ var
 
 // sub-tasks
 if(config.rtl) {
-  require('./collections/rtl')(gulp);
+  if(config.rtl === true || /^(yes|both)$/.test(config.rtl.toString().toLowerCase())) {
+    require('./collections/rtl')(gulp);
+  }
 }
 require('./collections/build')(gulp);
 
@@ -32,14 +34,15 @@ module.exports = function(callback) {
     return;
   }
 
-  // check for right-to-left (RTL) language
-  if(config.rtl === true || config.rtl === 'Yes') {
-    gulp.start('build-rtl');
-    return;
-  }
-
-  if(config.rtl == 'both') {
-    tasks.push('build-rtl');
+  if(config.rtl) {
+    // check for right-to-left (RTL) language
+    if(config.rtl.toString().toLowerCase() == 'both') {
+      tasks.push('build-rtl');
+    }
+    if(config.rtl === true || config.rtl.toString().toLowerCase() === 'yes') {
+      gulp.start('build-rtl');
+      return;
+    }
   }
 
   tasks.push('build-javascript');
